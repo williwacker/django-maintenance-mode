@@ -122,6 +122,12 @@ def _need_maintenance_ignore_users(request):
 
     user = request.user
 
+    if settings.MAINTENANCE_MODE_IGNORE_LOGOUT_SUPERUSER and user.is_superuser:
+         return False
+
+    if settings.MAINTENANCE_MODE_IGNORE_LOGOUT_STAFF_USER and user.is_staff:
+         return False
+
     if settings.MAINTENANCE_MODE_LOGOUT_AUTHENTICATED_USER and user.is_authenticated:
         logout(request)
         user = request.user
